@@ -61,10 +61,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Trying to run server on port 4000.
-app.listen(process.env.PORT || 4000, (err) => {
-  return err ? console.log("SERVER ERROR \n" + err) : console.log("SERVER OK");
-});
 
 
 
@@ -195,3 +191,8 @@ app.patch(
 );
 
 // <Basket items CRUD>
+
+// Trying to run server on port 4000.
+app.listen(process.env.PORT || 4000, (err) => {
+  return err ? console.log("SERVER ERROR \n" + err) : console.log("SERVER OK");
+});
