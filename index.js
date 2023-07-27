@@ -49,7 +49,7 @@ const app = express();
 // };
 
 // app.use(cors(corsOptions));
-app.use(allowCors);
+app.use(allowCors());
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 

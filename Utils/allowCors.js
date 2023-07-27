@@ -20,4 +20,4 @@ const handler = (req, res) => {
   res.end(d.toString())
 }
 
-export default allowCors(handler)
+export default allowCors
