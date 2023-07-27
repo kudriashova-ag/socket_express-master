@@ -64,6 +64,8 @@ app.use(cors(corsOptions));
 //   next();
 // };
 // app.use(cors); // <-- Should be at the top
+app.use("/uploads", express.static("uploads"));
+app.use(express.json());
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
@@ -84,8 +86,8 @@ const upload = multer({ storage });
 app.listen(process.env.PORT || 4000, (err) => {
   return err ? console.log("SERVER ERROR \n" + err) : console.log("SERVER OK");
 });
-app.use(express.json());
-app.use("/uploads", express.static("uploads"));
+
+
 
 // <User>
 app.get("/", (req, res) => {
