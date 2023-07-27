@@ -21,7 +21,6 @@ import * as reviewController from "./Controllers/ReviewController.js";
 // validationErrorsHandler - in case that field are named wrong or its value is invalid.
 import validationErrorsHandler from "./Utils/validationErrorsHandler.js";
 import multer from "multer";
-import allowCors from "./Utils/allowCors.js";
 
 // Connecting to database.
 mongoose
@@ -35,14 +34,7 @@ const app = express();
 
 var whitelist = ['https://diplom-plum.vercel.app/', 'http://localhost:3000']; //white list consumers
 var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(null, false);
-    }
-  },
-  origin: true,
+  origin: '*',
   methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   credentials: true, //Credentials are cookies, authorization headers or TLS client certificates.
