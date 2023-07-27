@@ -37,20 +37,20 @@ const app = express();
 //   methods: ['GET', 'POST', 'PUT', 'DELETE']
 // }));
 
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header(
-    'Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, X-Api-Key'
+const cors = (req, res, next) => {
+  const origin = "*"; // <-- change this in production
+  res.setHeader("Access-Control-Allow-Origin", origin);
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
   );
-  res.header('Access-Control-Allow-Credentials', 'true');
-  if ('OPTIONS' === req.method) {
-    res.sendStatus(200);
-  }
-  else {
-    next();
-  }
-});
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  );
+  next();
+};
+app.use(cors); // <-- Should be at the top
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
