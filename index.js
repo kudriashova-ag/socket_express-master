@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-// import cors from "cors";
+import cors from "cors";
 import fs from "fs";
 // Validations
 import { authorizationValidator } from "./Validations/Authorization.js";
@@ -32,25 +32,38 @@ mongoose
 
 const app = express();
 
-// app.use(cors({
-//   origin: ['http://localhost:3000', 'https://socketapp.vercel.app'],
-//   methods: ['GET', 'POST', 'PUT', 'DELETE']
-// }));
-
-const cors = (req, res, next) => {
-  const origin = "*"; // <-- change this in production
-  res.setHeader("Access-Control-Allow-Origin", origin);
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-  next();
+var whitelist = ['https://diplom-pvrgr0toq-kudriashova-ag.vercel.app/', 'http://localhost:4000']; //white list consumers
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
+  methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  credentials: true, //Credentials are cookies, authorization headers or TLS client certificates.
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'device-remember-token', 'Access-Control-Allow-Origin', 'Origin', 'Accept']
 };
-app.use(cors); // <-- Should be at the top
+
+app.use(cors(corsOptions));
+
+
+// const cors = (req, res, next) => {
+//   const origin = "http://localhost:3000"; // <-- change this in production
+//   res.setHeader("Access-Control-Allow-Origin", origin);
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+//   );
+//   next();
+// };
+// app.use(cors); // <-- Should be at the top
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
