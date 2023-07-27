@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import cors from "cors";
+// import cors from "cors";
 import fs from "fs";
 // Validations
 import { authorizationValidator } from "./Validations/Authorization.js";
