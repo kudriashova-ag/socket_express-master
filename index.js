@@ -39,10 +39,10 @@ app.use(cors({
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    if (!fs.existsSync("/tmp")) {
-      fs.mkdirSync("/tmp");
+    if (!fs.existsSync("tmp")) {
+      fs.mkdirSync("tmp");
     }
-    cb(null, "/tmp");
+    cb(null, "tmp");
   },
   filename: (_, file, cb) => {
     cb(null, `${Date.now()}--${file.originalname}`);
@@ -56,7 +56,7 @@ app.listen(process.env.PORT || 4000, (err) => {
   return err ? console.log("SERVER ERROR \n" + err) : console.log("SERVER OK");
 });
 app.use(express.json());
-app.use("/tmp", express.static("/tmp"));
+app.use("/tmp", express.static("tmp"));
 
 // <User>
 app.get("/", (req, res) => {
