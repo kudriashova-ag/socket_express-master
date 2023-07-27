@@ -32,41 +32,35 @@ mongoose
 
 const app = express();
 
-var whitelist = ['https://diplom-plum.vercel.app/', 'http://localhost:3000']; //white list consumers
-var corsOptions = {
-  origin: whitelist,
-  methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  credentials: true, //Credentials are cookies, authorization headers or TLS client certificates.
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'device-remember-token', 'Access-Control-Allow-Origin', 'Origin', 'Accept']
-};
-
-app.use(cors(corsOptions));
-
-app.use("/public", express.static("public"));
-app.use(express.json());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://socketapp.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    if (!fs.existsSync("public")) {
-      fs.mkdirSync("public");
+    if (!fs.existsSync("uploads")) {
+      fs.mkdirSync("uploads");
     }
-    cb(null, "public");
+    cb(null, "uploads");
   },
   filename: (_, file, cb) => {
     cb(null, `${Date.now()}--${file.originalname}`);
   },
 });
 
-
 const upload = multer({ storage });
 
-
-
+// Trying to run server on port 4000.
+app.listen(process.env.PORT || 4000, (err) => {
+  return err ? console.log("SERVER ERROR \n" + err) : console.log("SERVER OK");
+});
+app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
 // <User>
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to the backstage!!");
+  res.status(200).send("Welcome to the backstage");
 });
 
 app.get("/authme", checkAuthorization, userController.authorizationStatus);
@@ -80,7 +74,7 @@ app.post(
 
 app.post(
   "/upload",
-  // checkAuthorization,
+  checkAuthorization,
   upload.single("image"),
   userController.uploadFile
 );
@@ -191,8 +185,3 @@ app.patch(
 );
 
 // <Basket items CRUD>
-
-// Trying to run server on port 4000.
-app.listen(process.env.PORT || 4000, (err) => {
-  return err ? console.log("SERVER ERROR \n" + err) : console.log("SERVER OK");
-});
