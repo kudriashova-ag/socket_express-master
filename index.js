@@ -33,32 +33,33 @@ mongoose
 
 const app = express();
 
-// var whitelist = ['https://diplom-plum.vercel.app/', 'http://localhost:3000']; //white list consumers
-// var corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(null, false);
-//     }
-//   },
-//   methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-//   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-//   credentials: true, //Credentials are cookies, authorization headers or TLS client certificates.
-//   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'device-remember-token', 'Access-Control-Allow-Origin', 'Origin', 'Accept']
-// };
+var whitelist = ['https://diplom-plum.vercel.app/', 'http://localhost:3000']; //white list consumers
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
+  origin: true,
+  methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  credentials: true, //Credentials are cookies, authorization headers or TLS client certificates.
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'device-remember-token', 'Access-Control-Allow-Origin', 'Origin', 'Accept']
+};
 
-// app.use(cors(corsOptions));
-app.use(allowCors());
-app.use("/uploads", express.static("uploads"));
+app.use(cors(corsOptions));
+
+// app.use("/public", express.static("public"));
 app.use(express.json());
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    if (!fs.existsSync("uploads")) {
-      fs.mkdirSync("uploads");
+    if (!fs.existsSync("public")) {
+      fs.mkdirSync("public");
     }
-    cb(null, "uploads");
+    cb(null, "public");
   },
   filename: (_, file, cb) => {
     cb(null, `${Date.now()}--${file.originalname}`);
