@@ -76,7 +76,7 @@ app.use("/uploads", express.static("uploads"));
 
 // <User>
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to the backstage");
+  res.status(200).send("Welcome to the backstage!");
 });
 
 app.get("/authme", checkAuthorization, userController.authorizationStatus);
