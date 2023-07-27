@@ -34,7 +34,7 @@ const app = express();
 
 var whitelist = ['https://diplom-plum.vercel.app/', 'http://localhost:3000']; //white list consumers
 var corsOptions = {
-  origin: '*',
+  origin: whitelist,
   methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   credentials: true, //Credentials are cookies, authorization headers or TLS client certificates.
@@ -43,7 +43,7 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-// app.use("/public", express.static("public"));
+app.use("/public", express.static("public"));
 app.use(express.json());
 
 const storage = multer.diskStorage({
