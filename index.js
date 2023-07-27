@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import cors from "cors";
+// import cors from "cors";
 import fs from "fs";
 // Validations
 import { authorizationValidator } from "./Validations/Authorization.js";
@@ -21,6 +21,7 @@ import * as reviewController from "./Controllers/ReviewController.js";
 // validationErrorsHandler - in case that field are named wrong or its value is invalid.
 import validationErrorsHandler from "./Utils/validationErrorsHandler.js";
 import multer from "multer";
+import allowCors from "./Utils/allowCors.js";
 
 // Connecting to database.
 mongoose
@@ -32,38 +33,23 @@ mongoose
 
 const app = express();
 
-var whitelist = ['https://diplom-plum.vercel.app/', 'http://localhost:3000']; //white list consumers
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(null, false);
-    }
-  },
-  methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  credentials: true, //Credentials are cookies, authorization headers or TLS client certificates.
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'device-remember-token', 'Access-Control-Allow-Origin', 'Origin', 'Accept']
-};
-
-app.use(cors(corsOptions));
-
-
-// const cors = (req, res, next) => {
-//   const origin = "http://localhost:3000"; // <-- change this in production
-//   res.setHeader("Access-Control-Allow-Origin", origin);
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-//   );
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-//   );
-//   next();
+// var whitelist = ['https://diplom-plum.vercel.app/', 'http://localhost:3000']; //white list consumers
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(null, false);
+//     }
+//   },
+//   methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+//   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+//   credentials: true, //Credentials are cookies, authorization headers or TLS client certificates.
+//   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'device-remember-token', 'Access-Control-Allow-Origin', 'Origin', 'Accept']
 // };
-// app.use(cors); // <-- Should be at the top
+
+// app.use(cors(corsOptions));
+app.use(allowCors);
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 
@@ -91,7 +77,7 @@ app.listen(process.env.PORT || 4000, (err) => {
 
 // <User>
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to the backstage!");
+  res.status(200).send("Welcome to the backstage!!");
 });
 
 app.get("/authme", checkAuthorization, userController.authorizationStatus);
