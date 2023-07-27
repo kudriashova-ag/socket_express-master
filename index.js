@@ -80,7 +80,7 @@ app.post(
 
 app.post(
   "/upload",
-  checkAuthorization,
+  // checkAuthorization,
   upload.single("image"),
   userController.uploadFile
 );
