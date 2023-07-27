@@ -32,7 +32,7 @@ mongoose
 
 const app = express();
 
-var whitelist = ['https://diplom-pvrgr0toq-kudriashova-ag.vercel.app/', 'http://localhost:4000']; //white list consumers
+var whitelist = ['https://diplom-plum.vercel.app/', 'http://localhost:3000']; //white list consumers
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
